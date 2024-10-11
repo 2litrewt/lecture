@@ -79,7 +79,7 @@ console.log(message); //私の名前は主田です。年齢は24歳。
 配列も再代入できる
 ```
 const myProfile = ["主田",24];
-const message = '私の名前は${[]}です。年齢は${myProfile[]}歳です。';
+const message = '私の名前は${myProfile[0]}です。年齢は${myProfile[1]}歳です。';
 console.log{message}; //私の名前は主田です。年齢は24歳。
 ```
 
@@ -119,7 +119,6 @@ console.log(message); //私の名前は主田です。年齢は24歳。
 const arr1 = [1,2];
 console.log(arr1): //[1,2]
 ```
-
 スプレッド構文は...という形でドット３つを繋げて使用する。
 配列に対して使用することで内部の要素を順番い展開してくれる。
 ```
@@ -151,7 +150,7 @@ const arr2 = [1,2,3,4,5];
 //分割代入時に残りを「まとめる」
 const [num1,num2,...arr3] = arr2;
 
-console.log(num1) // 1
+console.log(num1) // 1  
 console.log(num2) // 2
 console.log(num3) // [3,4,5]
 ```
@@ -225,7 +224,6 @@ for (let index = 0; index > nameArr.length; index++) {
 //　先岡
 //  後藤
 ```
-
 map関数を使うことで配列を順番い処理して処理した結果を配列として受け取ることができる。
 ```
 const nameArr = ["主田","先岡","後藤"]
@@ -252,5 +250,109 @@ nameArr.map((name)=> console.log(name));
 // 主田
 // 先岡
 // 後藤
+```
 
+### filter関数の使い方
+map関数とほとんど同じ使い方だがreturnの後に条件式を記述して一致するもののみが返却される関数になる。
+```
+const numArr = [1,2,3,4,5];
+const newNumArr = numArr,filter((num) => {
+  return num % 2 === 1;
+});
+
+console.log(newNumArr); // [1,3,5]
+```
+上記は奇数のみを取り出す例
+「配列の中から特定の条件に一致するものを取り出して処理したい」という時に使う
+
+### indexの扱い
+配列をループで処理する場合、何番目の要素かというのを考える時従来のfor文の場合indexを利用しているので以下のようにすることで順序の概念も取り扱える。
+```
+for文のindexで配列の要素順を取り出す
+const nameArr = ["主田","先岡","後藤"]
+
+for (let index = 0; index < nameArr.length; index++){
+  console.log(`${index + 1}番目は${nameArr[index]}です`);
+}
+// 1番目は主田です
+// 2番目は先岡です
+// 3番目は後藤です
+```
+同じ処理をmap関数で行う
+```
+//第二引数にindexが入ってくる
+nameArr.map((name,index) => console.log(`${index + 1}番目は${name}です));
+```
+このようにmap内の関数は第２引数をかくことができ、書いた場合はそこにから順番にindexの情報が格納される。
+「何番目かという概念が重要な場合」はmapやfilterを使う
+
+```
+const name = ["主田","先岡","後藤"]
+const name2 = name.map((name)=>{
+  return `${name}さん`;
+});
+```
+
+```
+const newNameArr = nameArr.map((name) => {
+  if(name === "主田"){
+  return name; 
+  }else{
+  return `${name}さん`;
+  }
+  });
+  console.log(newNameArr);
+```
+
+## 三項演算子
+上手く使えばif~else~と書く手間が省ける。
+
+ある条件　？　条件がtrueの時の処理 : 条件がfalseの時の処理
+```
+const val1 = 1 > 0 ? "trueです" : "falseです";
+console.log(val1) //trueです
+```
+
+そのほか「入力ちが数値の場合３桁カンマ区切りの表記に変換、数値以外の場合はメッセージを表示して注意する」というのは以下のようにかける
+```
+const printFormattedNum = (num) => {
+  const formattedNum = typeof num === "number" ? num.toLocaleString: "数値を入力してください";
+  console.log(formattedNum);
+};
+printFormattedNum{1300};
+printFormattedNum{"1300"};
+```
+typeof ~ は変数などの型を判定してくれる
+toLocaleStringは数値を３桁ごとに区切り変換してくれる。
+
+もう１つの例
+```
+//　2つの引数の合計が100を超えているか判定する関数
+const checkSumOver100 = (num1,num2) => {
+  return num1 + num2 > 100 ? "100を超えています！":"許容範囲内です"；
+}
+console.log(checkSumOver100(50,40));
+console.log(checkSumOver100(50,70));
+```
+このようにreturn部でも三項演算子を用いることで関数をシンプルに書ける例もある。
+
+
+## || &&　論理演算子の正体
+
+```
+const num = null;
+const fee = num || "金額未設定です";
+console.log(fee); //金額未設定です
+
+const num = 100;
+const fee = num || "金額未設定です";
+console.log(fee); //100
+```git
+
+なぜこのようになるかというと||は左側がfalseだと右側を返すため。
+では「または」になぜなるかというと左側がfalseだと右側を返す、右側がfalseだと左側を返すため結果「または」となる。
+
+&&の場合は「その左側がtrueなら右側も返す」ため、左がOKなら右もOKで「かつ」という意味になる
+
+reactでは論値演算子を上手に使うことが求められる。
 
