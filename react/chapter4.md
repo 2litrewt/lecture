@@ -182,6 +182,8 @@ export const ColoredMessage = ({ color, children }) => {
 };
 
 ```
+propsは１つの機能に特化すること
+
 
 ## State(useState)
 React開発では画面に表示するデータや可変の状態をStateとして管理していく
